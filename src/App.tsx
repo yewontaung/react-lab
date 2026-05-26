@@ -1,6 +1,15 @@
+import { Outlet } from "react-router-dom"
+
 function App() {
   return (
-    <h1 className="text-red-600">Hello</h1>
+    <>
+      <nav className="px-20 py-4">
+        <h3>React Lab</h3>
+      </nav>
+      <section>
+        <Outlet />
+      </section>
+    </>
   )
 }
 
