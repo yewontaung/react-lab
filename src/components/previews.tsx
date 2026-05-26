@@ -24,17 +24,22 @@ function Preview() {
                     <head>
                         ${framework === "tailwind" ? `<script src="https://cdn.tailwindcss.com"></script>` : ""}
                         ${framework === "bootstrap" ? `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">` : ""}
+                        <script src="/script.js"></script>
                     </head>
                     <body>
-                        <div id="preview">
+                        <div style="position: relative; height: 100vh;">
+                            <div id="preview" style="position: absolute;"></div>
                         </div>
                     </body>
                 </html>
             `
-            if (iframe) iframe.srcdoc = srcDoc
-            setNeedRefresh(true)
+            if (iframe) {
+                iframe.addEventListener("load", () => setNeedRefresh(true))
+                iframe.srcdoc = srcDoc
+            }
         }
         load()
+        return ref.current?.removeEventListener("load", () => setNeedRefresh(false))
     }, [ref, framework, setNeedRefresh])
 
     useEffect(() => {
@@ -48,32 +53,6 @@ function Preview() {
         }
         if (codes || needRefresh) refresh()
     }, [codes, ref, needRefresh])
-
-    // useEffect(() => {
-
-    //     const load = () => {
-    //         const doc = ref?.current?.contentDocument
-    //         if (!doc) return
-
-    //         const head = doc.head
-    //         head.innerHTML = ""
-
-    //         if (framework === "tailwind") {
-    //             const script = document.createElement("script")
-    //             script.src = "https://cdn.tailwindcss.com"
-    //             // script.onload = refresh
-    //             head.appendChild(script)
-    //             console.log("Tailwind loaded")
-    //         } else if (framework === "bootstrap") {
-    //             const link = document.createElement("link")
-    //             link.rel = "stylesheet"
-    //             link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    //             head.appendChild(link)
-    //             console.log("Bootstrap loaded")
-    //         }
-    //     }
-    //     load()
-    // }, [framework, ref])
 
     return (
         <div className="border canvas h-full relative">
