@@ -1,10 +1,11 @@
-import { Editor } from "@monaco-editor/react"
+import { Editor, type OnMount } from "@monaco-editor/react"
 import { AppSelect } from "./app/app-select"
 import { ClipboardCheck, Copy } from "lucide-react"
 import { useState } from "react"
 import { useModalControl } from "../hooks/use-controls"
 import { AppModal } from "./app/app-modal"
 import { useCodes } from "../hooks/use-codes"
+import * as Monaco from "monaco-editor"
 
 export function EditorSpace() {
     return (
@@ -17,12 +18,23 @@ export function EditorSpace() {
 
 function CodeEditor() {
     const {setCodes} = useCodes()
+    const save = (value?:string) => {
+        if (! value) return
+        setCodes(value)
+    }
+
+    const onMount:OnMount = (editor, monaco: typeof Monaco) => {
+        editor.focus()
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+            save(editor.getValue())
+        })
+    }
     return (
         <div className="">
             <Editor height="420px"
                 language="html"
                 theme="vs-dark"
-                onChange={(v) => setCodes(v || "")}
+                onMount={onMount}
                 options={
                     {
                         fontSize: 16,
