@@ -49,7 +49,11 @@ function CodeEditor() {
 }
 
 function EditorNav() {
-    const {setFramework} = useCodes()
+    const {codes, setFramework} = useCodes()
+    const copy = async () => {
+        if(!codes) return
+        await navigator.clipboard.writeText(codes)
+    }
     return (
         <div className="border flex items-center justify-between mb-3 p-2">
             <AppSelect
@@ -63,7 +67,7 @@ function EditorNav() {
             />
 
             <div className="flex items-center gap-4">
-                <CopyButton />
+                <CopyButton copy={copy} />
                 <ReactButton />
             </div>
         </div>
@@ -95,11 +99,12 @@ const ReactModal = ({isOpen, open, close}: {isOpen:boolean, open:() => void, clo
     )
 }
 
-const CopyButton = () => {
+const CopyButton = ({copy}: {copy:() => void}) => {
     const [isCopying, setIsCopying] = useState(false)
     const onClick = () => {
         if(isCopying) return
         setIsCopying(true)
+        copy()
         setTimeout(() => setIsCopying(false), 2000)
     }
     return (
