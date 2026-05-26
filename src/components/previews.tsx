@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useCodes } from "../hooks/use-codes"
 
 export function PreviewSpace() {
@@ -14,7 +14,7 @@ function Preview() {
 
     const { codes, framework } = useCodes()
     const ref = useRef<HTMLIFrameElement>(null)
-
+    const [needRefresh, setNeedRefresh] = useState(false)
 
     useEffect(() => {
         const load = () => {
@@ -32,10 +32,10 @@ function Preview() {
                 </html>
             `
             if (iframe) iframe.srcdoc = srcDoc
+            setNeedRefresh(true)
         }
         load()
-
-    }, [ref, framework])
+    }, [ref, framework, setNeedRefresh])
 
     useEffect(() => {
         const refresh = () => {
@@ -44,9 +44,10 @@ function Preview() {
 
             const div = doc.querySelector("#preview")
             if (div) div.innerHTML = codes
+            setNeedRefresh(false)
         }
-        if (codes) refresh()
-    }, [codes, ref])
+        if (codes || needRefresh) refresh()
+    }, [codes, ref, needRefresh])
 
     // useEffect(() => {
 
@@ -76,7 +77,7 @@ function Preview() {
 
     return (
         <div className="border canvas h-full relative">
-            <iframe ref={ref} className="h-screen w-full" sandbox="allow-scripts allow-same-origin" />
+            <iframe ref={ref} className="h-full w-full" sandbox="allow-scripts allow-same-origin" />
         </div>
     )
 }
