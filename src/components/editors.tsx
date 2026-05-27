@@ -9,7 +9,8 @@ import * as Monaco from "monaco-editor"
 import { emmetHTML } from "emmet-monaco-es"
 import AppInput from "./app/app-input"
 import AppCheck from "./app/app-check"
-import { FaReact } from "react-icons/fa6"
+import { FaBootstrap, FaReact } from "react-icons/fa6"
+import { SiTailwindcss } from "react-icons/si"
 
 export function EditorSpace() {
     return (
@@ -62,15 +63,14 @@ function EditorNav() {
     }
     return (
         <div className="border flex items-center justify-between mb-3 p-2">
-            <AppSelect
-                id="framework"
-                name="framework"
-                options={[
-                    { value: "tailwind", label: "Tailwind" },
-                    { value: "bootstrap", label: "Bootstrap" }
-                ]}
-                onChange={(v) => v && setFramework(v as "tailwind" | "bootstrap")}
-            />
+                <AppSelect options={[
+                    {
+                        label: "Tailwind", value: "tailwind", icon: <SiTailwindcss className="text-blue-500" />,
+                    },
+                    {
+                        label: "Bootstrap", value: "bootstrap", icon: <FaBootstrap className="text-purple-700" />,
+                    },
+                ]} render={option => <>{option.icon} {option.label}</>} onChange={(v) => setFramework(v as "tailwind" | "bootstrap")} />
 
             <div className="flex items-center gap-4">
                 <CopyButton copy={copy} />
