@@ -20,18 +20,33 @@ export type AppModalProps = AppModalContextType & {isOpen:boolean, children: Rea
 export function AppModal({isOpen, open, close, children}: AppModalProps) {
     return (
         <AppModalContext.Provider value={{open, close}}>
-            <div onClick={close} className={isOpen ? "backdrop-blur-xl fixed inset-0 z-50 flex p-4 justify-center items-start" : "hidden"}>{children}</div>
+            <div onClick={close} className={isOpen ? "backdrop-blur fixed inset-0 z-50 flex p-4 justify-center items-start" : "hidden"}>{children}</div>
         </AppModalContext.Provider>
     )
 }
 
-AppModal.Header = function ({children, canClose=false}: {children:React.ReactNode, canClose?:boolean}) {
+AppModal.Header = function ({children, underline=false, canClose=false}: {underline?:boolean, children:React.ReactNode, canClose?:boolean}) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const {close} = useAppModal()
     return (
-        <div className="flex justify-between">
-            {children} {canClose && <button onClick={close}><X /></button>}
-        </div>
+        <>
+            <div className="flex justify-between items-center">
+                {children} {canClose && <button className="hover:bg-slate-500/20 p-1" onClick={close}><X /></button>}
+            </div>
+            {underline && <hr className="my-3 text-slate-500" />}
+            
+        </>
+    )
+}
+
+AppModal.Footer = function ({children, upperline=false, className}: {upperline?:boolean, children:React.ReactNode, className?:string}) {
+    return (
+        <>
+            {upperline && <hr className="text-slate-500 my-3" />}
+            <div className={className}>
+                {children}
+            </div>
+        </>
     )
 }
 
@@ -45,14 +60,16 @@ AppModal.Dialog = function ({size = "medium", children}: {size?:"small" | "mediu
     )
 }
 
-AppModal.Content = function ({children}: {children:React.ReactNode}) {
+AppModal.Content = function ({children, className}: {children:React.ReactNode, className?:string}) {
     return (
-        <div className="w-full p-3">{children}</div>
+        <div className={`w-full p-3 ${className}`}>{children}</div>
     )
 }
 
-AppModal.Body = function ({children}: {children:React.ReactNode}) {
+AppModal.Body = function ({className, children}: {className?:string, children:React.ReactNode}) {
     return (
-        <>{children}</>
+        <div className={className}>
+            {children}
+        </div>
     )
 }
