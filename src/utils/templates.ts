@@ -1,8 +1,12 @@
 import convert from "node-html-to-jsx";
 import type { ReactForm } from "../models/forms";
 
+function toJSX(html:string) {
+    return convert(html)
+}
+
 export function generateTemplate(form: ReactForm, codes: string) {
-    const template = form.reactArrowFunction ? arrowFunctionTemplate(form, convert(codes)) : functionTemplate(form, convert(codes))
+    const template = form.reactArrowFunction ? arrowFunctionTemplate(form, toJSX(codes)) : functionTemplate(form, toJSX(codes))
     return template
 }
 
