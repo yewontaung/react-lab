@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 body {
-    /* font-family: 'Courier New', Courier, monospace; */
     font-family: "Google Sans", monospace;
+}
+
+.dark body {
+    @apply bg-zinc-900 text-white;
 }
