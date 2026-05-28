@@ -28,8 +28,8 @@ function Preview() {
                         <script src="/script.js"></script>
                     </head>
                     <body>
-                        <div style="position: relative; height: 100vh; width: 100%; padding: 10px;">
-                            <div id="preview" style="position: absolute; width: fit-content;"></div>
+                        <div style="position: relative; height: 100vh; width: 100%;">
+                            <div id="preview" style="position: absolute; padding:10px; width: fit-content;"></div>
                         </div>
                     </body>
                 </html>
