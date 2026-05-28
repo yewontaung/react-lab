@@ -1,7 +1,7 @@
 import { Editor, type OnMount } from "@monaco-editor/react"
 import { AppSelect } from "./app/app-select"
 import { ClipboardCheck, Code, Copy, Settings } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useModalControl } from "../hooks/use-controls"
 import { AppModal } from "./app/app-modal"
 import { useCodes } from "../hooks/use-codes"
@@ -11,6 +11,14 @@ import AppInput from "./app/app-input"
 import AppCheck from "./app/app-check"
 import { FaReact } from "react-icons/fa6"
 import { SiBootstrap, SiTailwindcss } from "react-icons/si"
+import { Prism } from "react-syntax-highlighter"
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"
+import useForms from "../hooks/use-forms"
+import type { ReactForm } from "../models/forms"
+import * as prettier from "prettier/standalone"
+import parserBable from "prettier/plugins/babel"
+import * as esTree from "prettier/plugins/estree"
+import { generateTemplate } from "../utils/templates"
 
 export function EditorSpace() {
     return (
@@ -92,6 +100,23 @@ const ReactButton = () => {
 
 const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void, close: () => void }) => {
     const {codes} = useCodes()
+    const {form, onChange, controls} = useForms<ReactForm>(
+        {
+            name: "Demo",
+            acceptClassNames: false,
+            acceptChildren: false,
+            defaultExport: false,
+            reactArrowFunction: false,
+        }
+    )
+
+    const [review, setReview] = useState("")
+    useEffect(() => {
+        if(!codes) return
+        const template = generateTemplate(form, codes)
+        prettier.format(template, { parser: "babel-ts", plugins: [parserBable, esTree] }).then(setReview)
+    }, [codes, form])
+
     return (
         <AppModal isOpen={isOpen} open={open} close={close}>
             <AppModal.Dialog>
@@ -102,7 +127,7 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                                 <div className="flex items-center gap-x-3">
                                     <FaReact size={15} className="text-blue-500" /><h5>Component Name</h5> <hr className="grow text-slate-300" />
                                 </div>
-                                <AppInput className="px-3" placeholder="Enter Component Name" />
+                                <AppInput value={form.name} onChange={onChange} name={controls.name} className="px-3" placeholder="Enter Component Name" />
                                 <div className="mt-5">
                                     <div className="flex items-center gap-x-3">
                                         <Settings size={15} className="text-blue-500" /><h5>Component Settings</h5> <hr className="grow text-slate-300" /> <AppCheck label="Select All" id="sa" name="" />
@@ -110,18 +135,18 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                                     <div className="mt-3 px-3 flex gap-x-4">
                                         <ul className="flex flex-col gap-y-3">
                                             <li>
-                                                <AppCheck id="acn" name="" label="Accept className" />
+                                                <AppCheck name={controls.acceptClassNames} checked={form.acceptClassNames} onChange={onChange} id="acn" label="Accept className" />
                                             </li>
                                             <li>
-                                                <AppCheck id="ac" name="" label="Accept children" />
+                                                <AppCheck name={controls.acceptChildren} checked={form.acceptChildren} onChange={onChange} id="ac" label="Accept children" />
                                             </li>
                                         </ul>
                                         <ul className="flex flex-col gap-y-3">
                                             <li>
-                                                <AppCheck id="de" name="" label="Default export" />
+                                                <AppCheck name={controls.defaultExport} checked={form.defaultExport} onChange={onChange} id="de" label="Default export" />
                                             </li>
                                             <li>
-                                                <AppCheck id="raf" name="" label="React arrow function" />
+                                                <AppCheck name={controls.reactArrowFunction} checked={form.reactArrowFunction} onChange={onChange} id="raf" label="React arrow function" />
                                             </li>
                                         </ul>
                                     </div>
@@ -130,7 +155,13 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                                     <div className="flex items-center gap-x-3">
                                         <Code size={15} className="text-blue-500" /><h5>Code Review</h5> <hr className="grow text-slate-300" />
                                     </div>
-                                    <div className="border border-slate-400 p-3 mt-3">{codes}</div>
+                                    <div className="mt-3">
+                                        {/* <div>{JSON.stringify(form)}</div> */}
+                                        <Prism language="jsx" style={dracula} customStyle={{
+                                            borderRadius: 0,
+                                            height: 250,
+                                        }}>{review}</Prism>
+                                    </div>
                                 </div>
                             </form>
                         </AppModal.Body>
