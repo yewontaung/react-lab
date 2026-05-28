@@ -122,11 +122,17 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
     }
 
     const [review, setReview] = useState("")
+
     useEffect(() => {
         if(!codes) return
         const template = generateTemplate(form, codes)
         prettier.format(template, { parser: "babel-ts", plugins: [parserBable, esTree] }).then(setReview)
     }, [codes, form])
+
+    const copy = async () => {
+        const template = generateTemplate(form, codes)
+        await navigator.clipboard.writeText(template)
+    }
 
     return (
         <AppModal isOpen={isOpen} open={open} close={close}>
@@ -178,7 +184,7 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                         </AppModal.Body>
                         <AppModal.Footer className="mt-3">
                             <div className="flex justify-end">
-                                <ReactCopy copy={() => {}} />
+                                <ReactCopy copy={copy} />
                             </div>
                         </AppModal.Footer>
                 </AppModal.Content>
