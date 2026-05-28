@@ -19,12 +19,16 @@ function Preview() {
     const ref = useRef<HTMLIFrameElement>(null)
 
     useEffect(() => {
+        const refreshEvent = () => setNeedRefresh(true)
         const load = () => {
             const iframe = ref?.current
             const srcDoc = `
                 <html>
                     <head>
-                        ${tailwind().script.outerHTML}
+                        ${framework === "bootstrap" ? bootstrap().link.outerHTML : ""}
+                        ${framework === "bootstrap" ? bootstrap().script.outerHTML : ""}
+                        ${framework === "tailwind" ? tailwind().script.outerHTML : ""}
+
                         <script src="/script.js"></script>
                     </head>
                     <body>
@@ -35,26 +39,29 @@ function Preview() {
                 </html>
             `
             if (iframe) {
+                iframe.addEventListener("load", refreshEvent)
                 iframe.srcdoc = srcDoc
             }
         }
         load()
-    }, [ref])
+        // return ref?.current?.removeEventListener("load", refreshEvent)
+    }, [ref, framework])
 
-    useEffect(() => {
-            const doc = ref.current?.contentDocument
-            if(!doc) return
-            Array.from(doc.getElementsByClassName("framework")).forEach(i => i.remove())
-            if(framework === "bootstrap") {
-                const {link, script} = bootstrap()
-                doc.head.appendChild(link)
-                doc.head.appendChild(script)
-            } else if(framework == "tailwind") {
-                const {script} = tailwind()
-                doc.head.appendChild(script)
-            }
-            setNeedRefresh(true)
-    }, [framework])
+    // useEffect(() => {
+    //         const doc = ref.current?.contentDocument
+    //         if(!doc) return
+    //         Array.from(doc.querySelectorAll(".framework")).forEach(i => i.remove())
+    //         Array.from(doc.getElementsByTagName("style")).forEach(i => {console.log(i);i.innerHTML = "";})
+    //         if(framework === "bootstrap") {
+    //             const {link, script} = bootstrap()
+    //             doc.head.appendChild(link)
+    //             doc.head.appendChild(script)
+    //         } else if(framework == "tailwind") {
+    //             const {script} = tailwind()
+    //             doc.head.appendChild(script)
+    //         }
+    //         setNeedRefresh(true)
+    // }, [framework])
 
     useEffect(() => {
         const refresh = () => {
@@ -65,7 +72,8 @@ function Preview() {
             if (div) div.innerHTML = codes
             setNeedRefresh(false)
         }
-        if (codes || needRefresh) refresh()
+        if(codes) refresh()
+        else if (needRefresh) refresh()
     }, [codes, needRefresh, ref])
 
     return (
