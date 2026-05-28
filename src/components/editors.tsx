@@ -100,7 +100,7 @@ const ReactButton = () => {
 
 const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void, close: () => void }) => {
     const {codes} = useCodes()
-    const {form, onChange, controls} = useForms<ReactForm>(
+    const {form, onChange, controls, setForm} = useForms<ReactForm>(
         {
             name: "Demo",
             acceptClassNames: false,
@@ -109,6 +109,17 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
             reactArrowFunction: false,
         }
     )
+
+    const isSelectAll = () => form.acceptChildren && form.acceptClassNames && form.defaultExport && form.reactArrowFunction
+
+    const selectAll = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {checked} = e.target
+        if(checked) {
+            setForm(prev => ({...prev, acceptChildren: true, acceptClassNames: true, defaultExport: true, reactArrowFunction: true}))
+        } else {
+            setForm(prev => ({...prev, acceptChildren: false, acceptClassNames: false, defaultExport: false, reactArrowFunction: false}))
+        }
+    }
 
     const [review, setReview] = useState("")
     useEffect(() => {
@@ -130,7 +141,7 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                                 <AppInput value={form.name} onChange={onChange} name={controls.name} className="px-3" placeholder="Enter Component Name" />
                                 <div className="mt-5">
                                     <div className="flex items-center gap-x-3">
-                                        <Settings size={15} className="text-blue-500" /><h5>Component Settings</h5> <hr className="grow text-slate-300" /> <AppCheck label="Select All" id="sa" name="" />
+                                        <Settings size={15} className="text-blue-500" /><h5>Component Settings</h5> <hr className="grow text-slate-300" /> <AppCheck checked={isSelectAll()} onChange={selectAll} label={`${isSelectAll() ? "Deselect All" : "Select All"}`} id="sa" name="" />
                                     </div>
                                     <div className="mt-3 px-3 flex gap-x-4">
                                         <ul className="flex flex-col gap-y-3">

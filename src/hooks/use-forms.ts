@@ -9,5 +9,5 @@ export default function useForms<T extends Record<string, unknown>>(t: T) {
         const { name, value, type, checked } = e.target
         setForm((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }))
     }
-    return { form, onChange, controls }
+    return { form, onChange, controls, setForm }
 }
