@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useCodes } from "../hooks/use-codes"
 import { bootstrap, tailwind } from "../utils/frameworks"
+import { useTheme } from "../hooks/use-themes"
 
 export function PreviewSpace() {
     return (
@@ -15,6 +16,7 @@ function Preview() {
 
     const { codes, framework } = useCodes()
     const [needRefresh, setNeedRefresh] = useState(false)
+    const {theme} = useTheme()
 
     const ref = useRef<HTMLIFrameElement>(null)
 
@@ -31,7 +33,7 @@ function Preview() {
 
                         <script src="/script.js"></script>
                     </head>
-                    <body>
+                    <body style="background: transparent; color: ${theme === "light" ? "black" : "white"};">
                         <div style="position: relative; height: 100vh; width: 100%;">
                             <div id="preview" style="position: absolute; padding:10px; width: fit-content;"></div>
                         </div>
@@ -45,7 +47,7 @@ function Preview() {
         }
         load()
         // return ref?.current?.removeEventListener("load", refreshEvent)
-    }, [ref, framework])
+    }, [ref, framework, theme])
 
     // useEffect(() => {
     //         const doc = ref.current?.contentDocument

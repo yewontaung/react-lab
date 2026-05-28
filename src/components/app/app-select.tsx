@@ -42,7 +42,7 @@ export function AppSelect<T extends AppOptionProps>({className, options, render,
     return (
         <button onClick={toggle} className={`relative flex justify-center items-center gap-x-2 border p-1 ${className}`}>
             {render(selected)} {<ChevronDown size={20} />}
-            <div className="absolute bg-white/20 backdrop-blur min-w-[101%] shadow z-50">
+            <div className="absolute bg-white/20 dark:bg-white/10 dark:backdrop-blur-2xl backdrop-blur min-w-[105%] shadow z-50">
                 {options.map(i => <div className={`flex items-center hover:bg-slate-400/40 p-2 gap-x-2 ${hidden ? "hidden" : ""}`} onClick={() => select(i)} key={i.value}>{render(i)}</div>)}
             </div>
         </button>

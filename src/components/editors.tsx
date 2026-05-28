@@ -9,8 +9,8 @@ import * as Monaco from "monaco-editor"
 import { emmetHTML } from "emmet-monaco-es"
 import AppInput from "./app/app-input"
 import AppCheck from "./app/app-check"
-import { FaBootstrap, FaReact } from "react-icons/fa6"
-import { SiTailwindcss } from "react-icons/si"
+import { FaReact } from "react-icons/fa6"
+import { SiBootstrap, SiTailwindcss } from "react-icons/si"
 
 export function EditorSpace() {
     return (
@@ -65,10 +65,10 @@ function EditorNav() {
         <div className="border flex items-center justify-between mb-3 p-2">
                 <AppSelect options={[
                     {
-                        label: "Tailwind", value: "tailwind", icon: <SiTailwindcss className="text-blue-500" />,
+                        label: "Tailwind", value: "tailwind", icon: <SiTailwindcss className="text-blue-500 dark:text-blue-400" />,
                     },
                     {
-                        label: "Bootstrap", value: "bootstrap", icon: <FaBootstrap className="text-purple-700" />,
+                        label: "Bootstrap", value: "bootstrap", icon: <SiBootstrap className="text-purple-700 dark:text-purple-450" />,
                     },
                 ]} render={option => <>{option.icon} {option.label}</>} onChange={(v) => setFramework(v as "tailwind" | "bootstrap")} />
 
@@ -95,50 +95,50 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
     return (
         <AppModal isOpen={isOpen} open={open} close={close}>
             <AppModal.Dialog>
-                <AppModal.Content className="bg-white shadow">
-                    <AppModal.Header canClose>Copy as React Component</AppModal.Header>
-                    <AppModal.Body className="mt-3">
-                        <form className="text-sm">
-                            <div className="flex items-center gap-x-3">
-                                <FaReact size={15} className="text-blue-500" /><h5>Component Name</h5> <hr className="grow text-slate-300" />
-                            </div>
-                            <AppInput className="px-3" placeholder="Enter Component Name" />
-                            <div className="mt-5">
+                <AppModal.Content className="bg-white dark:bg-zinc-800/80 shadow">
+                        <AppModal.Header canClose>Copy as React Component</AppModal.Header>
+                        <AppModal.Body className="mt-3">
+                            <form className="text-sm">
                                 <div className="flex items-center gap-x-3">
-                                    <Settings size={15} className="text-blue-500" /><h5>Component Settings</h5> <hr className="grow text-slate-300" /> <AppCheck label="Select All" id="sa" name="" />
+                                    <FaReact size={15} className="text-blue-500" /><h5>Component Name</h5> <hr className="grow text-slate-300" />
                                 </div>
-                                <div className="mt-3 px-3 flex gap-x-4">
-                                    <ul className="flex flex-col gap-y-3">
-                                        <li>
-                                            <AppCheck id="acn" name="" label="Accept className" />
-                                        </li>
-                                        <li>
-                                            <AppCheck id="ac" name="" label="Accept children" />
-                                        </li>
-                                    </ul>
-                                    <ul className="flex flex-col gap-y-3">
-                                        <li>
-                                            <AppCheck id="de" name="" label="Default export" />
-                                        </li>
-                                        <li>
-                                            <AppCheck id="raf" name="" label="React arrow function" />
-                                        </li>
-                                    </ul>
+                                <AppInput className="px-3" placeholder="Enter Component Name" />
+                                <div className="mt-5">
+                                    <div className="flex items-center gap-x-3">
+                                        <Settings size={15} className="text-blue-500" /><h5>Component Settings</h5> <hr className="grow text-slate-300" /> <AppCheck label="Select All" id="sa" name="" />
+                                    </div>
+                                    <div className="mt-3 px-3 flex gap-x-4">
+                                        <ul className="flex flex-col gap-y-3">
+                                            <li>
+                                                <AppCheck id="acn" name="" label="Accept className" />
+                                            </li>
+                                            <li>
+                                                <AppCheck id="ac" name="" label="Accept children" />
+                                            </li>
+                                        </ul>
+                                        <ul className="flex flex-col gap-y-3">
+                                            <li>
+                                                <AppCheck id="de" name="" label="Default export" />
+                                            </li>
+                                            <li>
+                                                <AppCheck id="raf" name="" label="React arrow function" />
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
+                                <div className="mt-4">
+                                    <div className="flex items-center gap-x-3">
+                                        <Code size={15} className="text-blue-500" /><h5>Code Review</h5> <hr className="grow text-slate-300" />
+                                    </div>
+                                    <div className="border border-slate-400 p-3 mt-3">{codes}</div>
+                                </div>
+                            </form>
+                        </AppModal.Body>
+                        <AppModal.Footer className="mt-3">
+                            <div className="flex justify-end">
+                                <ReactCopy copy={() => {}} />
                             </div>
-                            <div className="mt-4">
-                                <div className="flex items-center gap-x-3">
-                                    <Code size={15} className="text-blue-500" /><h5>Code Review</h5> <hr className="grow text-slate-300" />
-                                </div>
-                                <div className="border border-slate-400 p-3 mt-3">{codes}</div>
-                            </div>
-                        </form>
-                    </AppModal.Body>
-                    <AppModal.Footer className="mt-3">
-                        <div className="flex justify-end">
-                            <ReactCopy copy={() => {}} />
-                        </div>
-                    </AppModal.Footer>
+                        </AppModal.Footer>
                 </AppModal.Content>
             </AppModal.Dialog>
         </AppModal>
@@ -154,7 +154,7 @@ const ReactCopy = ({ copy }: { copy: () => void }) => {
         setTimeout(() => setIsCopying(false), 1500)
     }
     return (
-        <button onClick={onClick} className={`border p-2 flex items-center justify-center gap-3`}>
+        <button onClick={onClick} className={`border p-2 flex items-center justify-center gap-3 hover:bg-slate-500/30`}>
             {isCopying || <><Copy size={15} /> Copy Component</>}
             {isCopying && <><ClipboardCheck size={15} /> Copying ...</>}
         </button>
@@ -172,7 +172,7 @@ const CopyButton = ({ copy }: { copy: () => void }) => {
     return (
         <button onClick={onClick} className="hover:bg-slate-400/30 p-2">
             {isCopying || <Copy size={15} />}
-            {isCopying && <ClipboardCheck size={15} />}
+            {isCopying && <ClipboardCheck className="dark:text-green-500" size={15} />}
         </button>
     )
 }
