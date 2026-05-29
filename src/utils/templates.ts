@@ -36,9 +36,9 @@ function params(form: ReactForm) {
     const props: string[] = []
     const types: string[] = []
 
-    if (form.acceptClassNames) {
-        props.push("classNames")
-        types.push("classNames?: string")
+    if (form.acceptClassName) {
+        props.push("className")
+        types.push("className?: string")
     }
 
     if (form.acceptChildren) {

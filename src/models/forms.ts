@@ -1,6 +1,6 @@
 export type ReactForm = {
     name: string
-    acceptClassNames: boolean
+    acceptClassName: boolean
     acceptChildren: boolean
     defaultExport: boolean
     reactArrowFunction: boolean

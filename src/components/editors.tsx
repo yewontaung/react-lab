@@ -103,21 +103,21 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
     const {form, onChange, controls, setForm} = useForms<ReactForm>(
         {
             name: "Demo",
-            acceptClassNames: false,
+            acceptClassName: false,
             acceptChildren: false,
             defaultExport: false,
             reactArrowFunction: false,
         }
     )
 
-    const isSelectAll = () => form.acceptChildren && form.acceptClassNames && form.defaultExport && form.reactArrowFunction
+    const isSelectAll = () => form.acceptChildren && form.acceptClassName && form.defaultExport && form.reactArrowFunction
 
     const selectAll = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {checked} = e.target
         if(checked) {
-            setForm(prev => ({...prev, acceptChildren: true, acceptClassNames: true, defaultExport: true, reactArrowFunction: true}))
+            setForm(prev => ({...prev, acceptChildren: true, acceptClassName: true, defaultExport: true, reactArrowFunction: true}))
         } else {
-            setForm(prev => ({...prev, acceptChildren: false, acceptClassNames: false, defaultExport: false, reactArrowFunction: false}))
+            setForm(prev => ({...prev, acceptChildren: false, acceptClassName: false, defaultExport: false, reactArrowFunction: false}))
         }
     }
 
@@ -152,7 +152,7 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
                                     <div className="mt-3 px-3 flex gap-x-4">
                                         <ul className="flex flex-col gap-y-3">
                                             <li>
-                                                <AppCheck name={controls.acceptClassNames} checked={form.acceptClassNames} onChange={onChange} id="acn" label="Accept className" />
+                                                <AppCheck name={controls.acceptClassName} checked={form.acceptClassName} onChange={onChange} id="acn" label="Accept className" />
                                             </li>
                                             <li>
                                                 <AppCheck name={controls.acceptChildren} checked={form.acceptChildren} onChange={onChange} id="ac" label="Accept children" />
