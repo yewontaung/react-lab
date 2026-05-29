@@ -20,7 +20,7 @@ export type AppModalProps = AppModalContextType & {isOpen:boolean, children: Rea
 export function AppModal({isOpen, open, close, children}: AppModalProps) {
     return (
         <AppModalContext.Provider value={{open, close}}>
-            <div onClick={close} className={isOpen ? "backdrop-blur fixed inset-0 z-50 flex p-4 justify-center items-start" : "hidden"}>{children}</div>
+            <div onClick={close} className={isOpen ? "backdrop-blur fixed overflow-auto inset-0 z-50 flex p-4 justify-center items-start" : "hidden"}>{children}</div>
         </AppModalContext.Provider>
     )
 }
