@@ -32,6 +32,7 @@ Built with React, TypeScript, and Tailwind CSS.
 ## Features
 - Write HTML with Emmet support.
 - Switch between Bootstrap or Tailwind CSS instantly.
+- Ctrl + S or Cmd + S to preview component
 - Drag preview component freely inside the preview frame.
 - Copy clean HTML.
 - Generate and Copy React Component.
