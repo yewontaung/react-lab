@@ -19,6 +19,7 @@ import * as prettier from "prettier/standalone"
 import parserBable from "prettier/plugins/babel"
 import * as esTree from "prettier/plugins/estree"
 import { generateTemplate } from "../utils/templates"
+import { useMobile } from "../hooks/use-mobile"
 
 export function EditorSpace() {
     return (
@@ -113,6 +114,7 @@ const ReactButton = () => {
 
 const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void, close: () => void }) => {
     const {codes} = useCodes()
+    const isMobile = useMobile()
     const {form, onChange, controls, setForm} = useForms<ReactForm>(
         {
             name: "Demo",
@@ -149,7 +151,7 @@ const ReactModal = ({ isOpen, open, close }: { isOpen: boolean, open: () => void
 
     return (
         <AppModal isOpen={isOpen} open={open} close={close}>
-            <AppModal.Dialog>
+            <AppModal.Dialog size={!isMobile ? "medium" : "large"}>
                 <AppModal.Content className="bg-white dark:bg-zinc-800/80 shadow">
                         <AppModal.Header canClose>Copy as React Component</AppModal.Header>
                         <AppModal.Body className="mt-3">

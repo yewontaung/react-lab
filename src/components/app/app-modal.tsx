@@ -20,7 +20,7 @@ export type AppModalProps = AppModalContextType & {isOpen:boolean, children: Rea
 export function AppModal({isOpen, open, close, children}: AppModalProps) {
     return (
         <AppModalContext.Provider value={{open, close}}>
-            <div onClick={close} className={isOpen ? "backdrop-blur fixed overflow-auto inset-0 z-50 flex p-4 justify-center items-start" : "hidden"}>{children}</div>
+            <div onClick={close} className={isOpen ? "backdrop-blur fixed overflow-auto inset-0 z-50 flex md:p-4 sm:p-2 justify-center items-start" : "hidden"}>{children}</div>
         </AppModalContext.Provider>
     )
 }
@@ -52,7 +52,7 @@ AppModal.Footer = function ({children, upperline=false, className}: {upperline?:
 
 AppModal.Dialog = function ({size = "medium", children}: {size?:"small" | "medium" | "large" , children:React.ReactNode}) {
     return (
-        <div onClick={e => e.stopPropagation()} className={`${
+        <div onClick={e => e.stopPropagation()} className={`mt-2 ${
             size === "medium" ? "w-[50%]"
             : size === "small" ? "w-[25%]"
             : "w-[80%]"
