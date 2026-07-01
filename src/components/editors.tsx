@@ -1,6 +1,6 @@
 import { Editor, type OnMount } from "@monaco-editor/react"
 import { AppSelect } from "./app/app-select"
-import { ClipboardCheck, Code, Copy, Settings } from "lucide-react"
+import { ClipboardCheck, Code, Copy, PlayCircle, Settings } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useModalControl } from "../hooks/use-controls"
 import { AppModal } from "./app/app-modal"
@@ -30,7 +30,7 @@ export function EditorSpace() {
 }
 
 function CodeEditor() {
-    const { setCodes } = useCodes()
+    const { setCodes, setEditor } = useCodes()
     const save = (value?: string) => {
         if (!value) return
         setCodes(value)
@@ -41,7 +41,7 @@ function CodeEditor() {
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
             save(editor.getValue())
         })
-
+        setEditor(editor)
         emmetHTML(monaco, ["html"])
     }
     return (
@@ -64,11 +64,17 @@ function CodeEditor() {
 }
 
 function EditorNav() {
-    const { codes, setFramework } = useCodes()
+    const { codes, setCodes, editor, setFramework } = useCodes()
     const copy = async () => {
         if (!codes) return
         await navigator.clipboard.writeText(codes)
     }
+
+    const run = () => {
+        if (!editor || !editor.getValue()) return
+       setCodes(editor.getValue())
+    }    
+
     return (
         <div className="border flex items-center justify-between mb-3 p-2">
                 <AppSelect options={[
@@ -82,9 +88,16 @@ function EditorNav() {
 
             <div className="flex items-center gap-4">
                 <CopyButton copy={copy} />
+                <RunButton run={run} />
                 <ReactButton />
             </div>
         </div>
+    )
+}
+
+const RunButton = ({run}:{run:() => void}) => {
+    return (
+        <button onClick={run} className="hover:bg-slate-400/40 rounded-full p-1"><PlayCircle size={20} /></button>
     )
 }
 

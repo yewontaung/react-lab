@@ -1,10 +1,13 @@
 import { createContext, useContext } from "react"
+import * as Monaco from "monaco-editor"
 
 type CodeContextType = {
     codes:string,
     setCodes:(codes:string) => void,
     framework:"bootstrap" | "tailwind"
     setFramework: (framework:"bootstrap" | "tailwind") => void
+    editor?:Monaco.editor.IStandaloneCodeEditor
+    setEditor:(editor:Monaco.editor.IStandaloneCodeEditor) => void
 }
 
 export const CodeContext = createContext<CodeContextType | null>(null)
